@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e03169;
+            background-image: url('images/background1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: rgb(21, 12, 12); /* Set default text color */
+        }
+
+        header, nav, .product, footer {
+            background-color: rgba(102, 102, 102, 0.0); /* Fully transparent background for header, nav, product containers, and footer */
+            color: white; /* White text for header, nav, product containers, and footer */
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        header nav ul li a:hover {
+            background-color: rgba(102, 102, 102, 0.2); /* Light grey background on hover */
+        }
+
+        header nav ul li.active a {
+            background-color: #858282; /* Grey background for active link */
+            border-radius: 5px; /* Rounded corners for active page */
+            padding: 8px 12px; /* Padding for active page */
+        }
+
+        #featured-products {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .product {
+            display: inline-block;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: rgba(102, 102, 102, 0.0); /* Fully transparent background for product containers */
+            color: white; /* White text color */
+            width: 220px;
+        }
+
+        .product img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .product h3, .product p {
+            color: #fff; /* White text color for product headings and prices */
+        }
+
+        .product button {
+            padding: 8px 12px;
+            background-color: rgba(102, 102, 102, 0.0); /* Fully transparent background for buttons */
+            color: white; /* White text for buttons */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .product button:hover {
+            background-color: #4d4c4c; /* Black background on hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MUSHK FRAGRANCES</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" id="home-link">Home</a></li>
+                <li><a href="products.html" id="products-link">Products</a></li>
+                <li><a href="cart.html" id="cart-link">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="featured-products">
+        <h2>Featured Products</h2>
+        <div class="product">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.xZmu73SHUFECMEDuUGk_uQHaHa&pid=Api&P=0&h=220" alt="Product 1">
+            <h3>Product 1</h3>
+            <p>$10.00</p>
+            <button onclick="addToCart('Product 1', 10.00)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://www.dolce.pl/hires/46/15081.jpg" alt="Product 2">
+            <h3>Product 2</h3>
+            <p>$20.00</p>
+            <button onclick="addToCart('Product 2', 20.00)">Add to Cart</button>
+        </div>
+       
+    </section>
+
+    <script>
+        // JavaScript to highlight active link in navigation
+        document.addEventListener('DOMContentLoaded', function () {
+            const url = window.location.href;
+            const homeLink = document.getElementById('home-link');
+            const productsLink = document.getElementById('products-link');
+            const cartLink = document.getElementById('cart-link');
+
+            if (url.includes("index.html")) {
+                homeLink.parentNode.classList.add('active');
+            } else if (url.includes("products.html")) {
+                productsLink.parentNode.classList.add('active');
+            } else if (url.includes("cart.html")) {
+                cartLink.parentNode.classList.add('active');
+            }
+        });
+
+        function addToCart(product, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ product, price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${product} added to cart!`);
+        }
+    </script>
+</body>
+</html>
