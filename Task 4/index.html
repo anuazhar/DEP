@@ -1,0 +1,156 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Two-sided Chat</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .chat-container {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 500px;
+        max-width: 90%;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        height: 300px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
+
+      .messages li {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        word-wrap: break-word;
+      }
+
+      .user1 {
+        background-color: #d4edda;
+        align-self: flex-start;
+      }
+
+      .user2 {
+        background-color: #f8d7da;
+        align-self: flex-end;
+      }
+
+      .user-form {
+        display: flex;
+        margin-top: 10px;
+      }
+
+      .user-form input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        flex: 1;
+        margin-right: 10px;
+      }
+
+      .user-form button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .user-form button:hover {
+        background-color: #0056b3;
+      }
+
+      h3 {
+        margin-bottom: 2px;
+        margin-top: 10px;
+      }
+      .title {
+        color: darkblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1 class="title">Real Time Chat</h1>
+    </div>
+    <div class="chat-container">
+      <ul class="messages" id="messages"></ul>
+
+      <div>
+        <h3>User 1</h3>
+        <form id="form1" class="user-form" action="">
+          <input
+            id="input1"
+            autocomplete="off"
+            placeholder="Type a message"
+          /><button>Send</button>
+        </form>
+      </div>
+
+      <div>
+        <h3>User 2</h3>
+        <form id="form2" class="user-form" action="">
+          <input
+            id="input2"
+            autocomplete="off"
+            placeholder="Type a message"
+          /><button>Send</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+
+      var form1 = document.getElementById("form1");
+      var input1 = document.getElementById("input1");
+      var form2 = document.getElementById("form2");
+      var input2 = document.getElementById("input2");
+
+      form1.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (input1.value) {
+          socket.emit("chat message", { user: "User 1", text: input1.value });
+          input1.value = "";
+        }
+      });
+
+      form2.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (input2.value) {
+          socket.emit("chat message", { user: "User 2", text: input2.value });
+          input2.value = "";
+        }
+      });
+
+      socket.on("chat message", function (msg) {
+        var item = document.createElement("li");
+        item.textContent = `${msg.user}: ${msg.text}`;
+        item.classList.add(msg.user === "User 1" ? "user1" : "user2");
+        document.getElementById("messages").appendChild(item);
+        document.getElementById("messages").scrollTop =
+          document.getElementById("messages").scrollHeight;
+      });
+    </script>
+  </body>
+</html>
